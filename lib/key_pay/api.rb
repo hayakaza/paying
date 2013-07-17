@@ -8,14 +8,14 @@ module KeyPay
       @api_url = options[:api_url] || "https://api.yourpayroll.com.au"
     end
    
-    def get(operation, options={}) 
+    def get(operation, options={})
       request("get", operation, options)
     end
-    
+
     def post(operation, params)
       request("post", operation, {:params => params})
     end
-        
+
     private
     
     def request(method, operation, options={})
@@ -23,7 +23,7 @@ module KeyPay
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      
+
       full_api_path = "/api/v2/#{operation}"
       full_api_path += "/#{options[:path]}" if options[:path]
       full_api_path += "?#{options[:query]}" if options[:query]
@@ -32,9 +32,9 @@ module KeyPay
         when "get"
           Net::HTTP::Get.new(full_api_path)
         when "post"
-          Net::HTTP::Post.new(full_api_path, initheader = {'Content-Type' =>'application/json'})        
+          Net::HTTP::Post.new(full_api_path, initheader = {'Content-Type' =>'application/json'})
       end
-      
+
       request.body = options[:params].to_json if options[:params]
       request.basic_auth(api_key,"")
       response = http.request(request)
@@ -45,5 +45,5 @@ module KeyPay
         raise StandardError.new(response.body)
       end
     end
-  end  
+  end
 end

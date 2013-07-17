@@ -1,4 +1,4 @@
-paying
+keypay
 ======
 
-paying
+KeyPay integration
