@@ -2,8 +2,7 @@ module KeyPay
   class Business < API
     OPERATION = "business"
     
-    JSON_ATTRIBUTES = {"id"                  => "id",
-                       "name"                => "name",
+    JSON_ATTRIBUTES = {"name"                => "name",
                        "abn"                 => "abn",
                        "legalName"           => "legal_name",
                        "contactName"         => "contact_name",

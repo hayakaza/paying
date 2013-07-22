@@ -16,6 +16,10 @@ module KeyPay
       request("post", operation, {:params => params})
     end
 
+    def put(operation, params)
+      request("put", operation, {:params => params})
+    end
+
     private
     
     def request(method, operation, options={})
@@ -33,6 +37,8 @@ module KeyPay
           Net::HTTP::Get.new(full_api_path)
         when "post"
           Net::HTTP::Post.new(full_api_path, initheader = {'Content-Type' =>'application/json'})
+        when "put"
+          Net::HTTP::Put.new(full_api_path, initheader = {'Content-Type' =>'application/json'})
       end
 
       request.body = options[:params].to_json if options[:params]
