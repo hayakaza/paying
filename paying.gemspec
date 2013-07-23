@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description = "Paying Integration Gem"
   s.authors     = ["Kemila Isdiandini"]
   s.email       = 'kemil07@gmail.com'
-  s.files       = ["lib/key_pay.rb", "lib/key_pay/api.rb", "lib/key_pay/business.rb"]
+  s.files       = ["Gemfile", "Rakefile", "README.md", "lib/key_pay.rb", "lib/key_pay/api.rb", "lib/key_pay/business.rb"]
   s.homepage    =
     'http://rubygems.org/gems/paying'
 end

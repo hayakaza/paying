@@ -8,19 +8,39 @@ class BusinessListTest < Test::Unit::TestCase
     @keypay = KeyPay::Business
 
     if STUB_KEYPAY_CALLS
-      @result = KeyPay::Business.stubs(:all).with(API_KEY).returns(dummy_business)
+      KeyPay::Business.stubs(:all).with(API_KEY).returns(dummy_business)
     end
+    @result = KeyPay::Business.all(API_KEY)
+    @new_business = dummy_business
   end
 
-  def test_get_business
-    new_business = dummy_business 
-    assert !@result.nil?
+  context "test_get_business" do
+    should "not be nil" do
+      assert !@result.nil?
+    end
 
-    assert_equal @result.name, new_business.name
-    assert_equal @result.external_id, new_business.external_id
-    assert_equal @result.abn, new_business.abn
-    assert_equal @result.contact_name, new_business.contact_name
-    assert_equal @result.contact_email_address, new_business.contact_email_address
-    assert_equal @result.contact_phone_number, new_business.contact_phone_number
+    should "handle the business name" do
+      assert_equal @result.name, @new_business.name
+    end
+
+    should "handle the external ID" do
+      assert_equal @result.external_id, @new_business.external_id
+    end
+
+    should "handle the abn" do
+      assert_equal @result.abn, @new_business.abn
+    end
+
+    should "handle the contact name" do
+      assert_equal @result.contact_name, @new_business.contact_name
+    end
+
+    should "handle the contact email address" do
+      assert_equal @result.contact_email_address, @new_business.contact_email_address
+    end
+
+    should "handle the contact phone number" do
+      assert_equal @result.contact_phone_number, @new_business.contact_phone_number
+    end
   end
 end

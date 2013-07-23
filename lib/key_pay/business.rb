@@ -1,7 +1,7 @@
 module KeyPay
   class Business < API
     OPERATION = "business"
-    
+
     JSON_ATTRIBUTES = {"name"                => "name",
                        "abn"                 => "abn",
                        "legalName"           => "legal_name",
@@ -10,7 +10,7 @@ module KeyPay
                        "contactPhoneNumber"  => "contact_phone_number",
                        "externalId"          => "external_id",
                        "standardHoursPerDay" => "standard_hours_per_day"}
-    
+
     attr_accessor :id, :name, :abn, :legal_name, :contact_name, :contact_email_address, :contact_phone_number, :external_id, :standard_hours_per_day
 
     def initialize(api_key=nil, params={})
@@ -42,7 +42,7 @@ module KeyPay
       end
       return true
     end
-    
+
     def construct_json_attributes
       attributes = {}
       JSON_ATTRIBUTES.each{|key, value| attributes[key] = self.send(value)}

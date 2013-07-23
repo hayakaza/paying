@@ -20,13 +20,13 @@ pp "**** Get Business By External ID API"
 pp business_external_id
 
 new_business = KeyPay::Business.new(KEY["api_key"], {
-:name => "My Business #{Time.now.to_i}", 
-:abn => 24133952824, 
-:legal_name => "Employment Innovations Pty Ltd #{Time.now.to_i}", 
-:contact_name => "Business Contact #{Time.now.to_i}", 
-:contact_email_address => "my@business.com", 
-:contact_phone_number => "123456", 
-:external_id => "TGE", 
+:name => "My Business #{Time.now.to_i}",
+:abn => 24133952824,
+:legal_name => "Employment Innovations Pty Ltd #{Time.now.to_i}",
+:contact_name => "Business Contact #{Time.now.to_i}",
+:contact_email_address => "my@business.com",
+:contact_phone_number => "123456",
+:external_id => "TGE",
 :standard_hours_per_day => 9})
 pp "**** POST Business API"
 pp new_business.create
