@@ -48,7 +48,7 @@ module KeyPay
       if response.code.to_i == 200 || response.code.to_i == 201
         JSON.parse(response.body)
       else
-        raise StandardError.new(response.body)
+        raise StandardError.new(response.body).message
       end
     end
   end

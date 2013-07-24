@@ -1,7 +1,7 @@
 module KeyPay
   class Employee < API
     OPERATION = "business"
-    
+   
     JSON_ATTRIBUTES = { "taxFileNumber"                             => "tax_file_number",
     										"status"                                    => "status",
             						"title"               		                  => "title",
@@ -98,11 +98,12 @@ module KeyPay
                   :bank_account3_account_name, :bank_account3_allocated_percentage, :bank_account3_fixed_amount, :super_fund1_fund_name, :super_fund1_member_number, 
                   :super_fund1_allocated_percentage, :super_fund1_fixed_amount, :super_fund2_fund_name, :super_fund2_member_number, :super_fund2_allocated_percentage, 
                   :super_fund2_fixed_amount, :super_fund3_fund_name, :super_fund3_member_number, :super_fund3_allocated_percentage, :super_fund3_fixed_amount, 
-                  :employee_leave_template, :employee_pay_rate_template, :hours_per_week, :date_tax_file_declaration_reported, :date_tax_file_declaration_signed
+                  :employee_leave_template, :employee_pay_rate_template, :hours_per_week, :date_tax_file_declaration_reported, :date_tax_file_declaration_signed, :business_id
 
 
 
     def initialize(api_key=nil, params={})
+      puts params
       params.each do |k,v|
         self.send("#{JSON_ATTRIBUTES[k] || k}=", v)
       end
@@ -111,20 +112,33 @@ module KeyPay
     end
 
     def self.all(api_key, business_id)
-      API.new(api_key).get(OPERATION, :path => "#{business_id}/employee/unstructured").map{|employee| self.new(api_key,employee)}
+      API.new(api_key).get(OPERATION, :path => self.basic_path(business_id)).map{|employee| self.new(api_key,employee)}
     end
 
-    # def self.get_by_id(api_key,id)
-    #   self.new(api_key, API.new(api_key).get(OPERATION, {:path => id}))
-    # end
+     def self.get_by_id(api_key, business_id, employee_id)
+       self.new(api_key, API.new(api_key).get(OPERATION, {:path => "#{self.basic_path(business_id)}/#{employee_id}"}))
+     end
 
-    # def self.get_by_external_id(api_key, id)
-    #   self.new(api_key, API.new(api_key).get(OPERATION, {:query => "externalId=#{id}"}))
-    # end
+     def self.get_by_external_id(api_key, business_id, external_id)
+       raise StandardError.new("ExternalID can't be blank!").message unless external_id
+       
+       result = api_key, API.new(api_key).get(OPERATION, {:path => self.basic_path(business_id), :query => "externalId=#{external_id}"})
+       
+       (result.is_a?Array) ? nil : self.new(result)
+     end
+     
+     def self.basic_path(business_id)
+       "#{business_id}/employee/unstructured"
+     end 
 
-    # def create
-    #   API.new(api_key).post(OPERATION, construct_json_attributes)
-    # end
+     def create
+       raise StandardError.new("BusinessID can't be blank!").message unless self.business_id
+       API.new(api_key).post(OPERATION, construct_json_attributes.merge(:path => self.class.basic_path(business_id)))
+     end
+     
+     #def update
+     #  API.new(api_key).put(OPERATION, construct_json_attributes)
+     #end 
 
     def ==(other) [ :id, :status, :tax_file_number, :title, :first_name, :surname, :date_of_birth, :external_id, :residential_street_address, 
 	                  :residential_suburb, :residential_state, :residential_post_code, :postal_street_address, :postal_suburb, :postal_state, 
