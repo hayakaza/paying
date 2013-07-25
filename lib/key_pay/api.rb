@@ -27,6 +27,7 @@ module KeyPay
     private
     
     def request(method, operation, options={})
+      puts options.inspect
       uri = URI.parse(api_url)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
