@@ -103,7 +103,6 @@ module KeyPay
 
 
     def initialize(api_key=nil, params={})
-      puts params
       params.each do |k,v|
         self.send("#{JSON_ATTRIBUTES[k] || k}=", v)
       end
@@ -116,15 +115,16 @@ module KeyPay
     end
 
      def self.get_by_id(api_key, business_id, employee_id)
+       raise StandardError.new("EmployeeID can't be blank!").message unless employee_id
        self.new(api_key, API.new(api_key).get(OPERATION, {:path => "#{self.basic_path(business_id)}/#{employee_id}"}))
      end
 
      def self.get_by_external_id(api_key, business_id, external_id)
        raise StandardError.new("ExternalID can't be blank!").message unless external_id
        
-       result = api_key, API.new(api_key).get(OPERATION, {:path => self.basic_path(business_id), :query => "externalId=#{external_id}"})
-       
-       (result.is_a?Array) ? nil : self.new(result)
+       result = api_key, API.new(api_key).get(OPERATION, {:path => self.basic_path(business_id), :query => "externalid=#{external_id}"})
+
+       (result.is_a?Array) ? self.new(result) : nil
      end
      
      def self.basic_path(business_id)
@@ -133,12 +133,12 @@ module KeyPay
 
      def create
        raise StandardError.new("BusinessID can't be blank!").message unless self.business_id
-       API.new(api_key).post(OPERATION, construct_json_attributes.merge(:path => self.class.basic_path(business_id)))
+       API.new(api_key).post(OPERATION, construct_json_attributes, {:path => self.class.basic_path(business_id)})
      end
      
-     #def update
-     #  API.new(api_key).put(OPERATION, construct_json_attributes)
-     #end 
+     def update
+      API.new(api_key).put(OPERATION, construct_json_attributes, {:path => "#{self.class.basic_path(business_id)}/#{id}"})
+     end 
 
     def ==(other) [ :id, :status, :tax_file_number, :title, :first_name, :surname, :date_of_birth, :external_id, :residential_street_address, 
 	                  :residential_suburb, :residential_state, :residential_post_code, :postal_street_address, :postal_suburb, :postal_state, 

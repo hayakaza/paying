@@ -12,11 +12,15 @@ module KeyPay
       request("get", operation, options)
     end
 
-    def post(operation, params)
-      request("post", operation, {:params => params})
+    def post(operation, params, options={})
+      params = {:params => params}
+      params = params.merge(options) if options
+      request("post", operation, params)
     end
 
-    def put(operation, params)
+    def put(operation, params, options={})
+      params = {:params => params}
+      params = params.merge(options) if options
       request("put", operation, {:params => params})
     end
 
@@ -31,7 +35,7 @@ module KeyPay
       full_api_path = "/api/v2/#{operation}"
       full_api_path += "/#{options[:path]}" if options[:path]
       full_api_path += "?#{options[:query]}" if options[:query]
-      
+
       request = case method
         when "get"
           Net::HTTP::Get.new(full_api_path)
@@ -44,7 +48,7 @@ module KeyPay
       request.body = options[:params].to_json if options[:params]
       request.basic_auth(api_key,"")
       response = http.request(request)
-            
+             
       if response.code.to_i == 200 || response.code.to_i == 201
         JSON.parse(response.body)
       else

@@ -10,10 +10,28 @@ module TestHelper
   STUB_KEYPAY_CALLS = ENV["STUB_KEYPAY_CALLS"].nil? ? true : (ENV["STUB_KEYPAY_CALLS"] == "true") unless defined? STUB_KEYPAY_CALLS
 
   API_KEY = ENV["API_KEY"] || "fake_key" unless defined?(API_KEY)
+  ID = 'fake_id'
 
   # Helper constant for checking regex
   GUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ unless defined?(GUID_REGEX)
 
+
+  def dummy_businesses
+    businesses = []
+    3.times.each do |i|
+      businesses << KeyPay::Business.new(API_KEY,
+        :name => "My Business #{1+i}",
+        :abn => 24133952824,
+        :legal_name => "Employment Innovations Pty Ltd #{1+i}",
+        :contact_name => "Business Contact #{1+i}",
+        :contact_email_address => "my@business.com",
+        :contact_phone_number => "123456",
+        :external_id => "TGE",
+        :standard_hours_per_day => 9
+      )
+    end
+    businesses
+  end
 
   def dummy_business
     KeyPay::Business.new(API_KEY,
