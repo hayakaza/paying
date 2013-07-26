@@ -111,20 +111,20 @@ module KeyPay
     end
 
     def self.all(api_key, business_id)
-      API.new(api_key).get(OPERATION, :path => self.basic_path(business_id)).map{|employee| self.new(api_key,employee)}
+      API.new(api_key).get(OPERATION, :path => self.basic_path(business_id)).map{|employee| self.new(api_key, employee.merge(:business_id => business_id))}
     end
 
      def self.get_by_id(api_key, business_id, employee_id)
        raise StandardError.new("EmployeeID can't be blank!").message unless employee_id
-       self.new(api_key, API.new(api_key).get(OPERATION, {:path => "#{self.basic_path(business_id)}/#{employee_id}"}))
+       self.new(api_key, API.new(api_key).get(OPERATION, {:path => "#{self.basic_path(business_id)}/#{employee_id}"}).merge(:business_id => business_id))
      end
 
      def self.get_by_external_id(api_key, business_id, external_id)
        raise StandardError.new("ExternalID can't be blank!").message unless external_id
        
-       result = api_key, API.new(api_key).get(OPERATION, {:path => self.basic_path(business_id), :query => "externalid=#{external_id}"})
-
-       (result.is_a?Array) ? self.new(result) : nil
+       result = API.new(api_key).get(OPERATION, {:path => self.basic_path(business_id), :query => "externalid=#{external_id}"})
+       
+       (result.is_a?Hash) ? self.new(api_key, result.merge(:business_id => business_id)) : nil
      end
      
      def self.basic_path(business_id)
@@ -133,11 +133,19 @@ module KeyPay
 
      def create
        raise StandardError.new("BusinessID can't be blank!").message unless self.business_id
-       API.new(api_key).post(OPERATION, construct_json_attributes, {:path => self.class.basic_path(business_id)})
+       
+       result = API.new(api_key).post(OPERATION, construct_json_attributes, {:path => self.class.basic_path(business_id)})
+       
+       self.id = result["id"] if result["status"].downcase == "completed"
+       self   
      end
      
      def update
-      API.new(api_key).put(OPERATION, construct_json_attributes, {:path => "#{self.class.basic_path(business_id)}/#{id}"})
+       raise StandardError.new("BusinessID can't be blank!").message unless self.business_id      
+       
+       result = API.new(api_key).post(OPERATION, construct_json_attributes, {:path => "#{self.class.basic_path(business_id)}/#{self.id}"})
+       
+       result["status"].downcase == "complete"
      end 
 
     def ==(other) [ :id, :status, :tax_file_number, :title, :first_name, :surname, :date_of_birth, :external_id, :residential_street_address, 
