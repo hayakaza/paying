@@ -11,6 +11,10 @@ module TestHelper
 
   API_KEY = ENV["API_KEY"] || "fake_key" unless defined?(API_KEY)
   ID = 'fake_id'
+  BUSINESS_ID = 'fake_business_id'
+  SURNAME = 'Holly'
+  RATE_UNIT = 'Weekly'
+  EXTERNAL_ID = '2213'
 
   # Helper constant for checking regex
   GUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ unless defined?(GUID_REGEX)
@@ -44,6 +48,42 @@ module TestHelper
       :external_id => "TGE",
       :standard_hours_per_day => 9
     )
+  end
+
+  def dummy_employees
+    employees = []
+    3.times.each do |i|
+      employees << KeyPay::Employee.new(API_KEY,
+                                        {:business_id => BUSINESS_ID,
+                                         :status => 'Active',
+                                         :tax_file_number => i+1,
+                                         :title => 'Mr',
+                                         :first_name => 'Holly',
+                                         :surname => 'Holliday',
+                                         :date_of_birth => '1992-07-12T00:00:00',
+                                         :external_id => "MAN000#{i+1}",
+                                         :residential_street_address => "1#{i}/400 Sydney Road",
+                                         :start_date => '2012-07-02T00:00:00',
+                                         :rate_unit => 'Hourly',
+                                         :job_title => 'Worker'})
+    end
+    employees
+  end
+
+  def dummy_employee
+    KeyPay::Employee.new(API_KEY,
+                        {:business_id => BUSINESS_ID,
+                         :status => 'Active',
+                         :tax_file_number => "1112223334",
+                         :title => 'Mr',
+                         :first_name => 'Holly',
+                         :surname => 'Holliday',
+                         :date_of_birth => '1992-07-12T00:00:00',
+                         :external_id => "MAN0001",
+                         :residential_street_address => "11/400 Sydney Road",
+                         :start_date => '2012-07-02T00:00:00',
+                         :rate_unit => 'Hourly',
+                         :job_title => 'Worker'})
   end
 
 end
