@@ -135,8 +135,8 @@ module KeyPay
        raise StandardError.new("BusinessID can't be blank!").message unless self.business_id
        
        result = API.new(api_key).post(OPERATION, construct_json_attributes, {:path => self.class.basic_path(business_id)})
-       
-       self.id = result["id"] if result["status"].downcase == "completed"
+          
+       self.id = result["id"] if result["status"].downcase == "complete"
        self   
      end
      

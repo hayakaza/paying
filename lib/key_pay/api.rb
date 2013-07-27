@@ -21,13 +21,16 @@ module KeyPay
     def put(operation, params, options={})
       params = {:params => params}
       params = params.merge(options) if options
-      request("put", operation, {:params => params})
+      request("put", operation, params)
     end
+    
+    def delete(operation, options={})
+      request("delete", operation, options)
+    end 
 
     private
     
     def request(method, operation, options={})
-      puts options.inspect
       uri = URI.parse(api_url)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
@@ -44,14 +47,16 @@ module KeyPay
           Net::HTTP::Post.new(full_api_path, initheader = {'Content-Type' =>'application/json'})
         when "put"
           Net::HTTP::Put.new(full_api_path, initheader = {'Content-Type' =>'application/json'})
+        when "delete"   
+          Net::HTTP::Delete.new(full_api_path)
       end
 
       request.body = options[:params].to_json if options[:params]
       request.basic_auth(api_key,"")
       response = http.request(request)
-             
+                   
       if response.code.to_i == 200 || response.code.to_i == 201
-        JSON.parse(response.body)
+        JSON.parse(response.body) rescue {"status" => "complete"}
       else
         raise StandardError.new(response.body).message
       end

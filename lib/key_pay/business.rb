@@ -2,16 +2,18 @@ module KeyPay
   class Business < API
     OPERATION = "business"
 
-    JSON_ATTRIBUTES = {"name"                => "name",
-                       "abn"                 => "abn",
-                       "legalName"           => "legal_name",
-                       "contactName"         => "contact_name",
-                       "contactEmailAddress" => "contact_email_address",
-                       "contactPhoneNumber"  => "contact_phone_number",
-                       "externalId"          => "external_id",
-                       "standardHoursPerDay" => "standard_hours_per_day"}
+    JSON_ATTRIBUTES = {"name"                       => "name",
+                       "abn"                        => "abn",
+                       "legalName"                  => "legal_name",
+                       "contactName"                => "contact_name",
+                       "contactEmailAddress"        => "contact_email_address",
+                       "contactPhoneNumber"         => "contact_phone_number",
+                       "externalId"                 => "external_id",
+                       "standardHoursPerDay"        => "standard_hours_per_day",
+                       "integratedTimesheetsEnabled"=> "integrated_timesheets_enabled"
+                       }
 
-    attr_accessor :id, :name, :abn, :legal_name, :contact_name, :contact_email_address, :contact_phone_number, :external_id, :standard_hours_per_day
+    attr_accessor :id, :name, :abn, :legal_name, :contact_name, :contact_email_address, :contact_phone_number, :external_id, :standard_hours_per_day, :integrated_timesheets_enabled
 
     def initialize(api_key=nil, params={})
       params.each do |k,v|
@@ -37,7 +39,7 @@ module KeyPay
       API.new(api_key).post(OPERATION, construct_json_attributes)
     end
 
-    def ==(other) [ :id, :name, :abn, :legal_name, :contact_name, :contact_email_address, :contact_phone_number, :external_id, :standard_hours_per_day ].each do |field|
+    def ==(other) [ :id, :name, :abn, :legal_name, :contact_name, :contact_email_address, :contact_phone_number, :external_id, :standard_hours_per_day, :integrated_timesheets_enabled ].each do |field|
         return false if send(field) != other.send(field)
       end
       return true
