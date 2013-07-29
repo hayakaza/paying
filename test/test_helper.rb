@@ -15,7 +15,8 @@ module TestHelper
   SURNAME = 'Holly'
   RATE_UNIT = 'Weekly'
   EXTERNAL_ID = '2213'
-
+  LOCATION_NAME = "Loc Name"
+  SOURCE = "None"
   # Helper constant for checking regex
   GUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ unless defined?(GUID_REGEX)
 
@@ -85,5 +86,33 @@ module TestHelper
                          :rate_unit => 'Hourly',
                          :job_title => 'Worker'})
   end
+  
+  def dummy_locations
+    locations =[]
+    3.times.each do |i|
+      locations << KeyPay::Location.new(API_KEY,
+                        {:id => i+1,
+                         :business_id => BUSINESS_ID,
+                         :external_id => "LOC#{i+1}",
+                         :name => "Heart Town M12#{i+1}",
+                         :state => "ACT",
+                         :source => "None",
+                         :fully_qualified_name => "Heart Town M12#{i+1}",
+                         :parent_id => 10                        
+                        })
+    end 
+    locations
+  end 
+  
+  def dummy_location
+    KeyPay::Location.new(API_KEY,
+                        {:id => 600,
+                         :business_id => BUSINESS_ID,
+                         :external_id => "LOC09",
+                         :name => "Heart Town M128",
+                         :state => "ACT",
+                         :source => "None"                          
+                        })
+  end 
 
 end
