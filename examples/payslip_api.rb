@@ -17,5 +17,10 @@ payruns = KeyPay::Payrun.all(KEY["api_key"], businesses_ids.first)
 pp payruns
 
 pp "*******GET payslip********"
-payslips = KeyPay::Payslip.all(KEY["api_key"], businesses_ids.first, payruns.last.id)
+payslips = KeyPay::Payslip.all(KEY["api_key"], businesses_ids.first, payruns.last.id, 2232)
 pp payslips
+
+
+pp "*******GET payslip by employeeId ********"
+payslip = KeyPay::Payslip.all(KEY["api_key"], businesses_ids.first, payruns.last.id, 2232)
+pp payslip
