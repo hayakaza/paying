@@ -10,10 +10,12 @@ module KeyPay
                        "contactPhoneNumber"         => "contact_phone_number",
                        "externalId"                 => "external_id",
                        "standardHoursPerDay"        => "standard_hours_per_day",
-                       "integratedTimesheetsEnabled"=> "integrated_timesheets_enabled"
+                       "integratedTimesheetsEnabled"=> "integrated_timesheets_enabled",
+                       "journalService"             => "journal_service"
                        }
 
-    attr_accessor :id, :name, :abn, :legal_name, :contact_name, :contact_email_address, :contact_phone_number, :external_id, :standard_hours_per_day, :integrated_timesheets_enabled
+    attr_accessor :id, :name, :abn, :legal_name, :contact_name, :contact_email_address, :contact_phone_number, :external_id, 
+    :standard_hours_per_day, :integrated_timesheets_enabled, :journal_service
 
     def initialize(api_key=nil, params={})
       params.each do |k,v|

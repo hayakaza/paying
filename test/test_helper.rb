@@ -19,8 +19,7 @@ module TestHelper
   SOURCE = "None"
   # Helper constant for checking regex
   GUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/ unless defined?(GUID_REGEX)
-
-
+ 
   def dummy_businesses
     businesses = []
     3.times.each do |i|
@@ -114,5 +113,83 @@ module TestHelper
                          :source => "None"                          
                         })
   end 
+  
+  def dummy_payruns
+    payruns =[]
+    3.times.each do |i|
+      payruns << KeyPay::Payrun.new(API_KEY,
+                        {:id => i+1,
+                         :date_finalised    =>  Time.now.to_s, 
+                         :pay_schedule_id   =>  890, 
+                         :pay_period_starting   =>  Time.now.to_s, 
+                         :pay_period_ending     =>  Time.now.to_s, 
+                         :date_paid             =>  Time.now.to_s, 
+                         :is_finalised          =>  false 
+                        })
+    end 
+    payruns
+  end 
 
+  def dummy_payslips 
+    payslips =[]
+    3.times.each do |i|
+      payslips << KeyPay::Payslip.new(API_KEY,
+                        {:abn => "24133952824",
+                         :accrued_leave => [],
+                         :bank_payments => [{:account_name => "A Test",
+                                            :account_number => "410171697",
+                                            :amount => 345.98,
+                                            :bsb => "112879"}],
+                         :base_rate => "Base Pay Rate: $20.62 Per Hour",
+                         :business_id => 31,
+                         :business_name => "Business Name Ltd",
+                         :deductions => [],
+                         :earnings_lines => [{:gross_earnings => 129.624,
+                                              :is_fixed => false,
+                                              :is_tax_exempt => false,
+                                             :notes => "27/07/2013 - 18:00 to 00:35",
+                                             :pay_category_name => "F&B 20yrs (BP1 SAT)",
+                                             :rate => 21.604,
+                                             :super_contribution => 11.99022,
+                                             :taxable_earnings => 129.624,
+                                             :units => 6.0}],
+                         :employee_id => 0000,
+                         :employee_name => "AA Test",                    
+                         :employee_postal_street_address => "5 Ogilvy Rd",
+                         :employee_postal_suburbState => "NSW",
+                         :employee_postal_suburb_name => "CLONTARF",
+                         :employee_postal_suburb_postcode => "2093",
+                         :gross_earnings => 345.98,
+                         :gross_ytd => 967.47,
+                         :gross_ytd_details => [{:gross_earnings => 349.98024,
+                                                 :pay_category_name => "F&B 20yrs (BP1 SAT)"}],
+
+                         :hourly_rate   => 0.0,
+                         :net_earnings  => 345.98,
+                         :net_ytd       => 967.47,
+                         :pay_period_ending => "28/07/2013",
+                         :pay_period_starting => "22/07/2013",
+                         :payg_withholding_amount => 0.0,
+                         :payg_ytd => 0.0,
+                         :payrun_id => 4319,
+                         :post_tax_deduction_amount => 0.0,
+                         :post_tax_deductions_ytd => 0.0,
+                         :pre_tax_deduction_amount => 0.0,
+                         :pre_tax_deductions_ytd  => 0.0,
+                         :sfss_amount     => 0.0,
+                         :sfss_ytd        => 0.0,
+                         :super_adjustments => [],
+                         :super_contribution => 32.0,
+                         :super_payments => [{ :amount => 32.0,
+                                               :fund_name => "REST Personal",
+                                               :member_number => "710425185"}],
+                         :super_ytd => 89.49,
+                         :taxable_earnings => 345.98,
+                         :taxable_earnings_ytd => 967.47,
+                         :total_accrued_leave => [],
+                         :total_hours => 15.18
+                        })
+    end 
+    payslips
+  end 
 end
