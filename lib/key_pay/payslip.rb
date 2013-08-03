@@ -43,7 +43,7 @@ module KeyPay
     "superYTD"                    =>  "super_ytd", 
     "taxableEarningsYTD"          =>  "taxable_earnings_ytd", 
     "baseRate"                    =>  "base_rate", 
-    "hourlyRate"                  =>  "hourlyRate", 
+    "hourlyRate"                  =>  "hourly_rate", 
     "preTaxDeductionsYTD"         =>  "pre_tax_deductions_ytd", 
     "postTaxDeductionsYTD"        =>  "post_tax_deductions_ytd", 
     "sfssYTD"                     =>  "sfss_ytd", 
@@ -57,7 +57,7 @@ module KeyPay
     :business_name, :business_address, :abn, :pay_period_starting, :pay_period_ending, :message, :employee_id, 
     :employee_name, :employee_postal_street_address, :employee_postal_address_line2, :employee_postal_suburb_name, 
     :employee_postal_suburb_postcode, :employee_postal_suburbState, :notation, :gross_ytd, :net_ytd, :payg_ytd, 
-    :super_ytd, :taxable_earnings_ytd, :base_rate, :hourlyRate, :pre_tax_deductions_ytd, :post_tax_deductions_ytd, 
+    :super_ytd, :taxable_earnings_ytd, :base_rate, :hourly_rate, :pre_tax_deductions_ytd, :post_tax_deductions_ytd, 
     :sfss_ytd, :help_ytd
     
     def initialize(api_key=nil, params={})
@@ -129,7 +129,7 @@ module KeyPay
   class PaySliDynamicClass
     def add_attrs(attrs)
       attrs.each do |var, value|
-        attr_name = var.underscore
+        attr_name = var.to_s.underscore
         (class << self ; self ; end).send :attr_accessor , attr_name
         instance_variable_set "@#{attr_name}", value
       end
@@ -145,7 +145,6 @@ module KeyPay
   class Deduction < PaySliDynamicClass; end 
   class SuperPayment < PaySliDynamicClass; end 
   class BankPayment < PaySliDynamicClass; end 
-  class GrossYTDDetail < PaySliDynamicClass; end 
   class GrossYTDDetail < PaySliDynamicClass; end 
   
 end
